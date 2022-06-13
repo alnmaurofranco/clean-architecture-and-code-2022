@@ -1,0 +1,35 @@
+{
+  "name": "aula-2-test-patterns",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "test:unit": "tsc && jest dist/",
+    "test:coverage": "tsc && jest --coverage",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "alnmaurofranco",
+  "license": "MIT",
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.194",
+    "@swc/jest": "^0.2.21",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.35",
+    "@types/pg-promise": "^5.4.3",
+    "@types/sinon": "^10.0.11",
+    "jest": "^28.1.0",
+    "prisma": "^3.15.0",
+    "ts-node": "^10.8.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.15.0",
+    "pg-promise": "^10.11.1",
+    "sinon": "^14.0.0"
+  }
+}
