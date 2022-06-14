@@ -56,4 +56,5 @@ model OrderItem {
   itemId  Int   @map("item_id")
 
   @@id([orderId, itemId])
+  @@map("order_items")
 }

@@ -7,7 +7,7 @@ import { DefaultFreightCalculator } from "./default-freight-calculator";
 import { OrderCode } from "./order-code";
 
 export class Order {
-  private cpf: CPF;
+  private readonly cpf: CPF;
   coupon: Coupon | undefined;
   private code: OrderCode;
 
@@ -33,6 +33,10 @@ export class Order {
     this.coupon = coupon;
   }
 
+  getCpf(): string {
+    return this.cpf.value;
+  }
+
   getCode(): string {
     return this.code.value;
   }
@@ -51,5 +55,9 @@ export class Order {
     }
     total += this.freight;
     return total;
+  }
+
+  getOrderItems(): OrderItem[] {
+    return this.orderItems;
   }
 }

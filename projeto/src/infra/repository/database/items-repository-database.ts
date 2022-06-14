@@ -7,7 +7,7 @@ export class ItemsRepositoryDatabase implements ItemsRepository {
 
   async findById(idItem: number): Promise<Item | undefined> {
     const [itemData] = await this.connection.query(
-      "SELECT * FROM items WHERE id_item = $1",
+      "SELECT * FROM ccca.items WHERE id_item = $1",
       [idItem]
     );
     if (!itemData) return;

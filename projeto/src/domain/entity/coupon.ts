@@ -5,6 +5,10 @@ export class Coupon {
     readonly expireDate?: Date
   ) {}
 
+  getCode(): string {
+    return this.code;
+  }
+
   isValid(today: Date = new Date()) {
     if (!this.expireDate) return true;
     return this.expireDate.getTime() >= today.getTime();

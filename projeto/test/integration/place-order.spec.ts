@@ -1,21 +1,33 @@
-import { PlaceOrder } from "../../src/application/use-cases/place-order";
+import { PlaceOrder } from "../../src/application/use-cases/place-order/place-order";
 import { ItemsRepositoryInMemory } from "../../src/infra/repository/in-memory/items-repository-in-memory";
 import { CouponsRepositoryInMemory } from "../../src/infra/repository/in-memory/coupons-repository-in-memory";
 import { OrdersRepositoryInMemory } from "../../src/infra/repository/in-memory/orders-repository-in-memory";
-import { PlaceOrderInput } from "../../src/application/use-cases/place-order-input";
+import { PlaceOrderInput } from "../../src/application/use-cases/place-order/place-order-input";
 import { PgPromiseConnectionAdapter } from "../../src/infra/database/pg-promise-connection-adapter";
 import { ItemsRepositoryDatabase } from "../../src/infra/repository/database/items-repository-database";
 import { ItemsRepositoryPrisma } from "../../src/infra/repository/database/items-repository-prisma";
+import { CouponsRepositoryPrisma } from "../../src/infra/repository/database/coupons-repository-prisma";
+import { OrdersRepositoryPrisma } from "../../src/infra/repository/database/orders-repository-prisma";
+import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connection-adapter";
 
-test("Deve fazer um pedido", async () => {
-  const itemsRepository = new ItemsRepositoryInMemory();
-  const couponsRepository = new CouponsRepositoryInMemory();
-  const odersRepository = new OrdersRepositoryInMemory();
-  const placeOrder = new PlaceOrder(
+let placeOrder: PlaceOrder;
+
+beforeEach(() => {
+  // const itemsRepository = new ItemsRepositoryInMemory();
+  // const connection = PgPromiseConnectionAdapter.getInstance();
+  // const itemsRepository = new ItemsRepositoryDatabase(connection);
+  // With PrismaORM
+  const itemsRepository = new ItemsRepositoryPrisma();
+  const couponsRepository = new CouponsRepositoryPrisma();
+  const odersRepository = new OrdersRepositoryPrisma();
+  placeOrder = new PlaceOrder(
     itemsRepository,
     odersRepository,
     couponsRepository
   );
+});
+
+test("Deve fazer um pedido", async () => {
   // Request/Input/DTO (Dados de entrada) - Dados de entrada
   const input = {
     cpf: "839.435.452-10",
@@ -29,18 +41,10 @@ test("Deve fazer um pedido", async () => {
   };
   // Response/Output (Dados de saída)
   const output = await placeOrder.execute(input);
-  expect(output.total).toBe(25.65);
+  expect(output.total).toBe(75.65);
 });
 
 test("Deve fazer um pedido com cálculo de frete", async () => {
-  const itemsRepository = new ItemsRepositoryPrisma();
-  const couponsRepository = new CouponsRepositoryInMemory();
-  const odersRepository = new OrdersRepositoryInMemory();
-  const placeOrder = new PlaceOrder(
-    itemsRepository,
-    odersRepository,
-    couponsRepository
-  );
   // Request/Input/DTO (Dados de entrada) - Dados de entrada
   const input = {
     cpf: "839.435.452-10",
@@ -57,14 +61,6 @@ test("Deve fazer um pedido com cálculo de frete", async () => {
 });
 
 test("Deve fazer um pedido com código", async () => {
-  const itemsRepository = new ItemsRepositoryInMemory();
-  const couponsRepository = new CouponsRepositoryInMemory();
-  const odersRepository = new OrdersRepositoryInMemory();
-  const placeOrder = new PlaceOrder(
-    itemsRepository,
-    odersRepository,
-    couponsRepository
-  );
   // Request/Input/DTO (Dados de entrada) - Dados de entrada
   const input = {
     cpf: "839.435.452-10",
@@ -78,4 +74,11 @@ test("Deve fazer um pedido com código", async () => {
   // Response/Output (Dados de saída)
   const output = await placeOrder.execute(input);
   expect(output.code).toBe("202200000001");
+});
+
+afterEach(async () => {
+  const prisma = new PrismaConnectionAdapter();
+  await prisma.connection.$executeRaw`DELETE FROM order_items`;
+  await prisma.connection.$executeRaw`DELETE FROM orders`;
+  await prisma.connection.$disconnect();
 });

@@ -1,10 +1,10 @@
 import { PlaceOrderInput } from "./place-order-input";
 import { PlaceOrderOutput } from "./place-order-output";
-import { Order } from "../../domain/entity/order";
-import { ItemsRepository } from "../../domain/repository/items-repository";
-import { OrdersRepository } from "../../domain/repository/orders-repository";
-import { CouponsRepository } from "../../domain/repository/coupons-repository";
-import { DefaultFreightCalculator } from "../../domain/entity/default-freight-calculator";
+import { Order } from "../../../domain/entity/order";
+import { ItemsRepository } from "../../../domain/repository/items-repository";
+import { OrdersRepository } from "../../../domain/repository/orders-repository";
+import { CouponsRepository } from "../../../domain/repository/coupons-repository";
+import { DefaultFreightCalculator } from "../../../domain/entity/default-freight-calculator";
 
 export class PlaceOrder {
   constructor(

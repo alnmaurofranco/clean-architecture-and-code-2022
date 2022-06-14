@@ -1,4 +1,4 @@
-import { OrderItem } from "../../domain/entity/orderItems";
+import { OrderItem } from "../../../domain/entity/orderItems";
 
 type OrderItems = { idItem: number; quantity: number };
 

@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import { Item } from "../../../domain/entity/item";
 import { ItemsRepository } from "../../../domain/repository/items-repository";
-import { PrismaAdapter } from "../../database/prisma";
+import { PrismaConnectionAdapter } from "../../database/prisma-connection-adapter";
 
-export class ItemsRepositoryPrisma implements ItemsRepository {
-  private readonly connection: PrismaClient = PrismaAdapter;
-
+export class ItemsRepositoryPrisma
+  extends PrismaConnectionAdapter
+  implements ItemsRepository
+{
   async findById(idItem: number): Promise<Item | undefined> {
     const item = await this.connection.item.findUnique({
       where: {
