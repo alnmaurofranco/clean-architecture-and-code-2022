@@ -12,29 +12,29 @@ datasource db {
 
 model Item {
 
-  id_item     String      @id @default(cuid())
+  id_item     Int         @id @default(autoincrement())
   category    String
   description String
   price       Decimal     @db.Money
-  width       Int         @db.Integer
-  height      Int         @db.Integer
-  length      Int         @db.Integer
-  weight      Int         @db.Integer
+  width       Int?        @db.Integer
+  height      Int?        @db.Integer
+  length      Int?        @db.Integer
+  weight      Float?
   OrderItem   OrderItem[]
 
   @@map("items")
 }
 
 model Coupon {
-  code        String   @id
-  percentage  Decimal
-  expire_date DateTime
+  code        String    @id
+  percentage  Int       @db.Integer
+  expire_date DateTime?
 
   @@map("coupons")
 }
 
 model Order {
-  id_order   String      @id @default(uuid())
+  id_order   Int         @id @default(autoincrement())
   coupon     String
   code       String
   cpf        String
@@ -50,10 +50,10 @@ model OrderItem {
   price    Decimal @db.Money
   quantity Int     @db.Integer
 
-  order   Order  @relation(fields: [orderId], references: [id_order])
-  orderId String @map("order_id")
-  item    Item   @relation(fields: [itemId], references: [id_item])
-  itemId  String @map("item_id")
+  order   Order @relation(fields: [orderId], references: [id_order])
+  orderId Int   @map("order_id")
+  item    Item  @relation(fields: [itemId], references: [id_item])
+  itemId  Int   @map("item_id")
 
   @@id([orderId, itemId])
 }

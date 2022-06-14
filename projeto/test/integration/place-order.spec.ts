@@ -3,6 +3,9 @@ import { ItemsRepositoryInMemory } from "../../src/infra/repository/in-memory/it
 import { CouponsRepositoryInMemory } from "../../src/infra/repository/in-memory/coupons-repository-in-memory";
 import { OrdersRepositoryInMemory } from "../../src/infra/repository/in-memory/orders-repository-in-memory";
 import { PlaceOrderInput } from "../../src/application/use-cases/place-order-input";
+import { PgPromiseConnectionAdapter } from "../../src/infra/database/pg-promise-connection-adapter";
+import { ItemsRepositoryDatabase } from "../../src/infra/repository/database/items-repository-database";
+import { ItemsRepositoryPrisma } from "../../src/infra/repository/database/items-repository-prisma";
 
 test("Deve fazer um pedido", async () => {
   const itemsRepository = new ItemsRepositoryInMemory();
@@ -30,7 +33,7 @@ test("Deve fazer um pedido", async () => {
 });
 
 test("Deve fazer um pedido com cálculo de frete", async () => {
-  const itemsRepository = new ItemsRepositoryInMemory();
+  const itemsRepository = new ItemsRepositoryPrisma();
   const couponsRepository = new CouponsRepositoryInMemory();
   const odersRepository = new OrdersRepositoryInMemory();
   const placeOrder = new PlaceOrder(

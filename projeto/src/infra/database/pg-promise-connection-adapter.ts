@@ -5,10 +5,12 @@ export class PgPromiseConnectionAdapter implements Connection {
   private pgp: any;
 
   constructor() {
-    this.pgp = pg()("postgres://postgres:docker@localhost:5432/cleandb");
+    this.pgp = pg()(
+      "postgres://postgres:docker@localhost:5432/cleandb?schema=ccca"
+    );
   }
 
   async query(statement: string, params?: any[]): Promise<any> {
-    return this.pgp.query(statement, params);
+    return await this.pgp.query(statement, params);
   }
 }
