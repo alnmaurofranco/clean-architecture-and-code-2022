@@ -14,6 +14,6 @@ test("Deve criar uma interface gráfica com tema escuro", () => {
   const darkTheme = new DarkWidgetFactory();
   const view = new View(darkTheme);
   expect(view.label.color).toBe("white");
-  expect(view.button.color).toBe("white");
-  expect(view.button.backgroundColor).toBe("black");
+  expect(view.button.color).toBe("black");
+  expect(view.button.backgroundColor).toBe("white");
 });
