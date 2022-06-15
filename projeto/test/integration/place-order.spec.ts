@@ -9,22 +9,15 @@ import { ItemsRepositoryPrisma } from "../../src/infra/repository/database/items
 import { CouponsRepositoryPrisma } from "../../src/infra/repository/database/coupons-repository-prisma";
 import { OrdersRepositoryPrisma } from "../../src/infra/repository/database/orders-repository-prisma";
 import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connection-adapter";
+import { PrismaRepositoryFactory } from "../../src/infra/factory/prisma-repository-factory";
+import { InMemoryRepositoryFactory } from "../../src/infra/factory/in-memory-repository-factory";
 
 let placeOrder: PlaceOrder;
 
 beforeEach(() => {
-  // const itemsRepository = new ItemsRepositoryInMemory();
-  // const connection = PgPromiseConnectionAdapter.getInstance();
-  // const itemsRepository = new ItemsRepositoryDatabase(connection);
-  // With PrismaORM
-  const itemsRepository = new ItemsRepositoryPrisma();
-  const couponsRepository = new CouponsRepositoryPrisma();
-  const odersRepository = new OrdersRepositoryPrisma();
-  placeOrder = new PlaceOrder(
-    itemsRepository,
-    odersRepository,
-    couponsRepository
-  );
+  const repositoryFactory = new PrismaRepositoryFactory();
+  //const repositoryFactory = new InMemoryRepositoryFactory();
+  placeOrder = new PlaceOrder(repositoryFactory);
 });
 
 test("Deve fazer um pedido", async () => {

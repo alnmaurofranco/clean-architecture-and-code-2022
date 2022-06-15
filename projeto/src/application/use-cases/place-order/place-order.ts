@@ -5,13 +5,18 @@ import { ItemsRepository } from "../../../domain/repository/items-repository";
 import { OrdersRepository } from "../../../domain/repository/orders-repository";
 import { CouponsRepository } from "../../../domain/repository/coupons-repository";
 import { DefaultFreightCalculator } from "../../../domain/entity/default-freight-calculator";
+import { RepositoryFactory } from "../../../domain/factory/repository-factory";
 
 export class PlaceOrder {
-  constructor(
-    readonly itemsRepository: ItemsRepository,
-    readonly ordersRepository: OrdersRepository,
-    readonly couponsRepository: CouponsRepository
-  ) {}
+  itemsRepository: ItemsRepository;
+  couponsRepository: CouponsRepository;
+  ordersRepository: OrdersRepository;
+
+  constructor(readonly repositoryFactory: RepositoryFactory) {
+    this.itemsRepository = repositoryFactory.createItemsRepository();
+    this.couponsRepository = repositoryFactory.createCouponsRepository();
+    this.ordersRepository = repositoryFactory.createOrderRepository();
+  }
 
   async execute(input: PlaceOrderInput): Promise<PlaceOrderOutput> {
     const sequence = (await this.ordersRepository.count()) + 1;
