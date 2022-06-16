@@ -1,5 +1,5 @@
-import { Button } from "./button";
-import { Label } from "./label";
+import { Button } from "./button.interface";
+import { Label } from "./label.interface";
 
 export interface WidgetFactory {
   createLabel(): Label;

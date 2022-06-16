@@ -1,5 +1,5 @@
-import { Button } from "./button";
-import { Label } from "./label";
+import { Button } from "./button.interface";
+import { Label } from "./label.interface";
 import { LightButton } from "./light-button";
 import { LightLabel } from "./light-label";
 import { WidgetFactory } from "./widget-factory.interface";
