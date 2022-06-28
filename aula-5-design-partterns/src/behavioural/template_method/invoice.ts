@@ -1,4 +1,5 @@
 import { Item } from "./item";
+import { TaxItem } from "./tax-item";
 
 export class Invoice {
   constructor(public items: Item[] = []) {}
@@ -10,7 +11,9 @@ export class Invoice {
   getTaxes(): number {
     let taxes = 0;
     for (const item of this.items) {
-      taxes += item.getTax();
+      if (item instanceof TaxItem) {
+        taxes += item.calculateTax();
+      }
     }
     return taxes;
   }
