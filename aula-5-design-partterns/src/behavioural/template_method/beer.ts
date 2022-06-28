@@ -1,11 +1,11 @@
-import { Item } from "./item";
+import { TaxItem } from "./tax-item";
 
-export class Beer extends Item {
+export class Beer extends TaxItem {
   constructor(description: string, price: number) {
     super("Beer", description, price);
   }
 
   getTax(): number {
-    return (this.price * 10) / 100;
+    return 10;
   }
 }
