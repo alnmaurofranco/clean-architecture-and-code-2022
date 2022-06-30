@@ -2,13 +2,25 @@ import { Order } from "../../../domain/entity/order";
 import { OrdersRepository } from "../../../domain/repository/orders-repository";
 
 export class OrdersRepositoryInMemory implements OrdersRepository {
-  constructor(public orders: Order[] = []) {}
+  orders: Order[];
+
+  constructor() {
+    this.orders = [];
+  }
+
+  async get(code: string): Promise<Order> {
+    const order = await this.orders.find((order) => order.getCode() === code);
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    return order;
+  }
 
   async save(order: Order): Promise<void> {
-    this.orders.push(order);
+    await this.orders.push(order);
   }
 
   async count(): Promise<number> {
-    return this.orders.length;
+    return await this.orders.length;
   }
 }

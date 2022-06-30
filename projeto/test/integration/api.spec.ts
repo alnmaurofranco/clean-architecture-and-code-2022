@@ -1,6 +1,6 @@
 import axios from "axios";
 
-test("Deve testar a API /oders (POST) ", async () => {
+test.skip("Deve testar a API /oders (POST) ", async () => {
   const response = await axios.post("http://localhost:3333/orders", {
     cpf: "839.435.452-10",
     orderItems: [
@@ -16,7 +16,7 @@ test("Deve testar a API /oders (POST) ", async () => {
   expect(order.total).toBe(75.65);
 });
 
-test("Deve testar a API /simulate-freight (POST) ", async () => {
+test.skip("Deve testar a API /simulate-freight (POST) ", async () => {
   const response = await axios.post("http://localhost:3333/simulate-freight", {
     items: [
       {
