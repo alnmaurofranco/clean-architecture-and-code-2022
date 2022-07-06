@@ -8,6 +8,10 @@ export class OrdersRepositoryInMemory implements OrdersRepository {
     this.orders = [];
   }
 
+  async findAll(): Promise<Order[]> {
+    return this.orders;
+  }
+
   async get(code: string): Promise<Order> {
     const order = await this.orders.find((order) => order.getCode() === code);
     if (!order) {

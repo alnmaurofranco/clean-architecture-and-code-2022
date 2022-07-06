@@ -9,6 +9,16 @@ export class OrdersRepositoryPrisma
   extends PrismaConnectionAdapter
   implements OrdersRepository
 {
+  async findAll(): Promise<Order[]> {
+    const oders = await this.connection.order.findMany();
+    const ordersDomain = [];
+    for (const order of oders) {
+      const orderDomain = OrderMapper.toDomain(order);
+      ordersDomain.push(orderDomain);
+    }
+    return ordersDomain;
+  }
+
   async get(code: string): Promise<Order> {
     const orderDataExisting = await this.connection.order.findFirst({
       where: { code },
