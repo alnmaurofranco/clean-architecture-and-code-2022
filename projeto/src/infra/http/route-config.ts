@@ -1,5 +1,6 @@
 import { DefaultFreightCalculator } from "../../domain/entity/default-freight-calculator";
 import { RepositoryFactory } from "../../domain/factory/repository-factory";
+import { GetOrdersController } from "../controller/get-orders-controller";
 import { PlaceOrderController } from "../controller/place-order-controller";
 import { SimulateFreightController } from "../controller/simulate-freight-controller";
 import { ItemsRepositoryPrisma } from "../repository/database/items-repository-prisma";
@@ -20,6 +21,11 @@ export class RouteConfig {
         freightCalculator
       );
       return await simulateFreightController.handle(params, body);
+    });
+
+    http.on("/orders", "get", async function (params: any, body: any) {
+      const getOrdersController = new GetOrdersController(repositoryFactory);
+      return getOrdersController.handle(params, body);
     });
   }
 }

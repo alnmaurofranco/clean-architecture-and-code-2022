@@ -10,13 +10,13 @@ export class OrdersRepositoryPrisma
   implements OrdersRepository
 {
   async findAll(): Promise<Order[]> {
-    const oders = await this.connection.order.findMany();
-    const ordersDomain = [];
-    for (const order of oders) {
-      const orderDomain = OrderMapper.toDomain(order);
-      ordersDomain.push(orderDomain);
+    const odersData = await this.connection.order.findMany();
+    const orders: Order[] = [];
+    for (const orderData of odersData) {
+      const order = await this.get(orderData.code);
+      orders.push(order);
     }
-    return ordersDomain;
+    return orders;
   }
 
   async get(code: string): Promise<Order> {

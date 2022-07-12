@@ -11,7 +11,7 @@ import { OrdersRepositoryPrisma } from "../../src/infra/repository/database/orde
 import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connection-adapter";
 import { PrismaRepositoryFactory } from "../../src/infra/factory/prisma-repository-factory";
 import { InMemoryRepositoryFactory } from "../../src/infra/factory/in-memory-repository-factory";
-import { GetOrderUseCase } from "../../src/application/use-cases/get-order/get-order-use-case";
+import { GetOrdersUseCase } from "../../src/application/use-cases/get-orders/get-orders-use-case";
 
 let placeOrder: PlaceOrder;
 let getOrders: GetOrdersUseCase;
@@ -38,7 +38,7 @@ test("Deve obter todos os pedidos", async () => {
   // Response/Output (Dados de saída)
   await placeOrder.execute(input);
   const getOrdersOutput = await getOrders.execute();
-  expect(getOrdersOutput.orders).toHaveLength(1);
+  expect(getOrdersOutput.orders).toHaveLength(3);
 });
 
 afterEach(async () => {
