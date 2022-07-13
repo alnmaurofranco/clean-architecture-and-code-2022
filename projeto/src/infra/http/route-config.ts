@@ -1,5 +1,6 @@
 import { DefaultFreightCalculator } from "../../domain/entity/default-freight-calculator";
 import { RepositoryFactory } from "../../domain/factory/repository-factory";
+import { GetOrderController } from "../controller/get-order-controller";
 import { GetOrdersController } from "../controller/get-orders-controller";
 import { PlaceOrderController } from "../controller/place-order-controller";
 import { SimulateFreightController } from "../controller/simulate-freight-controller";
@@ -26,6 +27,11 @@ export class RouteConfig {
     http.on("/orders", "get", async function (params: any, body: any) {
       const getOrdersController = new GetOrdersController(repositoryFactory);
       return getOrdersController.handle(params, body);
+    });
+
+    http.on("/orders/:code", "get", async function (params: any, body: any) {
+      const getOrderController = new GetOrderController(repositoryFactory);
+      return getOrderController.handle(params, body);
     });
   }
 }

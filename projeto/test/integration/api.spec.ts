@@ -65,7 +65,25 @@ test("Deve testar a API /orders (GET) ", async () => {
   await placeOrder.execute(input);
   const response = await axios.get("http://localhost:3333/orders");
   const orders = response.data;
-  console.log(orders);
+  expect(orders.orders).toHaveLength(1);
+});
+
+test("Deve testar a API /orders/code (GET) ", async () => {
+  const input = {
+    cpf: "839.435.452-10",
+    orderItems: [
+      { idItem: 1, quantity: 1 },
+      { idItem: 2, quantity: 1 },
+      { idItem: 3, quantity: 3 },
+    ],
+    date: new Date("2022-06-05"),
+    coupon: "VALE5",
+  };
+  // Response/Output (Dados de saída)
+  await placeOrder.execute(input);
+  const response = await axios.get("http://localhost:3333/orders/202200000001");
+  const order = response.data;
+  expect(order.code).toBe("202200000001");
 });
 
 afterEach(async () => {

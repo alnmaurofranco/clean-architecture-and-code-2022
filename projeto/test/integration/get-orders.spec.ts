@@ -38,7 +38,7 @@ test("Deve obter todos os pedidos", async () => {
   // Response/Output (Dados de saída)
   await placeOrder.execute(input);
   const getOrdersOutput = await getOrders.execute();
-  expect(getOrdersOutput.orders).toHaveLength(3);
+  expect(getOrdersOutput.orders).toHaveLength(1);
 });
 
 afterEach(async () => {
