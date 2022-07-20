@@ -4,11 +4,16 @@ import { GetOrderController } from "../controller/get-order-controller";
 import { GetOrdersController } from "../controller/get-orders-controller";
 import { PlaceOrderController } from "../controller/place-order-controller";
 import { SimulateFreightController } from "../controller/simulate-freight-controller";
+import { Connection } from "../database/connection.interface";
 import { ItemsRepositoryPrisma } from "../repository/database/items-repository-prisma";
 import { Http } from "./http.interface";
 
 export class RouteConfig {
-  constructor(http: Http, repositoryFactory: RepositoryFactory) {
+  constructor(
+    http: Http,
+    repositoryFactory: RepositoryFactory,
+    connection: Connection
+  ) {
     http.on("/orders", "post", async (params: any, body: any) => {
       const placeOrderController = new PlaceOrderController(repositoryFactory);
       return await placeOrderController.handle(params, body);
@@ -30,7 +35,7 @@ export class RouteConfig {
     });
 
     http.on("/orders/:code", "get", async function (params: any, body: any) {
-      const getOrderController = new GetOrderController(repositoryFactory);
+      const getOrderController = new GetOrderController(connection);
       return getOrderController.handle(params, body);
     });
   }

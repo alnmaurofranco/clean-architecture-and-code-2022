@@ -1,3 +1,3 @@
 export interface Connection {
-  query(statement: string, params?: any[]): Promise<any>;
+  query<T = any>(statement: string, params?: any): Promise<T>;
 }

@@ -12,7 +12,7 @@ beforeEach(() => {
   placeOrder = new PlaceOrder(repositoryFactory);
 });
 
-test.skip("Deve testar a API /oders (POST) ", async () => {
+test("Deve testar a API /orders (POST) ", async () => {
   const response = await axios.post("http://localhost:3333/orders", {
     cpf: "839.435.452-10",
     orderItems: [

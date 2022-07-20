@@ -11,7 +11,6 @@ datasource db {
 }
 
 model Item {
-
   id_item     Int         @id @default(autoincrement())
   category    String
   description String
@@ -41,6 +40,7 @@ model Order {
   issue_date DateTime
   freight    Decimal
   sequence   Int         @db.Integer
+  total      Float?
   OrderItem  OrderItem[]
 
   @@map("orders")

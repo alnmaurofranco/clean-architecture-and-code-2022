@@ -79,6 +79,7 @@ export class OrdersRepositoryPrisma
         issue_date: order.date,
         freight: order.getFreight(),
         sequence: order.sequence,
+        total: order.getTotal(),
       },
     });
 

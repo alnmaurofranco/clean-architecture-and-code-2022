@@ -5,15 +5,25 @@ type GetOrderInput = {
 };
 
 type GetOrderOutput = {
-  orders: { code: string; total: number }[];
+  code: string;
+  total: number;
 };
+
+type GetOrderQuery = [
+  {
+    code: string;
+    total: number;
+  }
+];
 
 export class GetOrder {
   constructor(readonly connection: Connection) {}
 
   async execute({ code }: GetOrderInput): Promise<GetOrderOutput> {
-    const order = await this.connection
-      .$executeRaw<GetOrderOutput>`SELECT * FROM orders WHERE code = ${code}`;
-    return order;
+    const [orderData] = await this.connection.query<GetOrderQuery>(
+      "SELECT code, total::float FROM orders WHERE code = $1 ",
+      code
+    );
+    return orderData;
   }
 }

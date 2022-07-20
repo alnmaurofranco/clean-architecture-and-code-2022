@@ -11,16 +11,16 @@ import { OrdersRepositoryPrisma } from "../../../src/infra/repository/database/o
 import { PrismaConnectionAdapter } from "../../../src/infra/database/prisma-connection-adapter";
 import { PrismaRepositoryFactory } from "../../../src/infra/factory/prisma-repository-factory";
 import { InMemoryRepositoryFactory } from "../../../src/infra/factory/in-memory-repository-factory";
-import { GetOrderUseCase } from "../../../src/application/query/get-order";
+import { GetOrder } from "../../../src/application/query/get-order";
 
 let placeOrder: PlaceOrder;
-let getOrder: GetOrderUseCase;
+let getOrder: GetOrder;
 
 beforeEach(() => {
+  const connection = new PrismaConnectionAdapter();
   const repositoryFactory = new PrismaRepositoryFactory();
-  // const repositoryFactory = new InMemoryRepositoryFactory();
   placeOrder = new PlaceOrder(repositoryFactory);
-  getOrder = new GetOrderUseCase(repositoryFactory);
+  getOrder = new GetOrder(connection);
 });
 
 test("Deve obter um pedido pelo código", async () => {
@@ -41,12 +41,12 @@ test("Deve obter um pedido pelo código", async () => {
     code: placeOrderOutput.code,
   });
   expect(getOrderOutput.code).toBe("202200000001");
-  expect(getOrderOutput.total).toBe(125.65);
+  expect(getOrderOutput.total).toBe(75.65);
 });
 
 afterEach(async () => {
   const prisma = new PrismaConnectionAdapter();
-  await prisma.connection.$executeRaw`DELETE FROM order_items`;
-  await prisma.connection.$executeRaw`DELETE FROM orders`;
+  await prisma.connection.$executeRawUnsafe("DELETE FROM order_items");
+  await prisma.connection.$executeRawUnsafe("DELETE FROM orders");
   await prisma.connection.$disconnect();
 });
