@@ -12,6 +12,7 @@ import { PrismaConnectionAdapter } from "../../../src/infra/database/prisma-conn
 import { PrismaRepositoryFactory } from "../../../src/infra/factory/prisma-repository-factory";
 import { InMemoryRepositoryFactory } from "../../../src/infra/factory/in-memory-repository-factory";
 import { GetOrder } from "../../../src/application/query/get-order";
+import { OrderDAODatabase } from "../../../src/infra/dao/order-dao-database";
 
 let placeOrder: PlaceOrder;
 let getOrder: GetOrder;
@@ -19,8 +20,9 @@ let getOrder: GetOrder;
 beforeEach(() => {
   const connection = new PrismaConnectionAdapter();
   const repositoryFactory = new PrismaRepositoryFactory();
+  const orderDAO = new OrderDAODatabase(connection);
   placeOrder = new PlaceOrder(repositoryFactory);
-  getOrder = new GetOrder(connection);
+  getOrder = new GetOrder(orderDAO);
 });
 
 test("Deve obter um pedido pelo código", async () => {

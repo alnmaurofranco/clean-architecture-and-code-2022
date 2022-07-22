@@ -1,4 +1,5 @@
 import { Connection } from "../../infra/database/connection.interface";
+import { OrderDAO } from "../dao/order-dao";
 
 type GetOrderInput = {
   code: string;
@@ -17,13 +18,10 @@ type GetOrderQuery = [
 ];
 
 export class GetOrder {
-  constructor(readonly connection: Connection) {}
+  constructor(readonly orderDAO: OrderDAO) {}
 
   async execute({ code }: GetOrderInput): Promise<GetOrderOutput> {
-    const [orderData] = await this.connection.query<GetOrderQuery>(
-      "SELECT code, total::float FROM orders WHERE code = $1 ",
-      code
-    );
+    const [orderData] = await this.orderDAO.findByCode(code);
     return orderData;
   }
 }
