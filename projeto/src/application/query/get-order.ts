@@ -18,7 +18,7 @@ type GetOrderQuery = [
 ];
 
 export class GetOrder {
-  constructor(readonly orderDAO: OrderDAO) {}
+  constructor(private readonly orderDAO: OrderDAO) {}
 
   async execute({ code }: GetOrderInput): Promise<GetOrderOutput> {
     const [orderData] = await this.orderDAO.findByCode(code);

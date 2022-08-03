@@ -10,7 +10,7 @@ type GetOrdersQuery = OrderOutput[];
 export class GetOrders {
   orders: OrderOutput[];
 
-  constructor(readonly orderDAO: OrderDAO) {
+  constructor(private readonly orderDAO: OrderDAO) {
     this.orders = [];
   }
 
