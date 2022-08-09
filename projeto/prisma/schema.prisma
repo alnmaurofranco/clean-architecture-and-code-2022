@@ -58,3 +58,13 @@ model OrderItem {
   @@id([orderId, itemId])
   @@map("order_items")
 }
+
+model StockEntry {
+  id_stock_entry Int      @id @default(autoincrement())
+  idItem         Int      @db.Integer
+  quantity       Int      @db.Integer
+  operation      String
+  date           DateTime
+
+  @@map("stock_entries")
+}
