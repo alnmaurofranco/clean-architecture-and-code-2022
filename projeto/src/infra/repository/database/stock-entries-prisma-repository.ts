@@ -36,4 +36,8 @@ export class StockEntriesRepositoryPrisma
       },
     });
   }
+
+  async clear(): Promise<void> {
+    await this.connection.stockEntry.deleteMany();
+  }
 }
