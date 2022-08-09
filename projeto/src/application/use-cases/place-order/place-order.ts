@@ -6,16 +6,20 @@ import { OrdersRepository } from "../../../domain/repository/orders-repository";
 import { CouponsRepository } from "../../../domain/repository/coupons-repository";
 import { DefaultFreightCalculator } from "../../../domain/entity/default-freight-calculator";
 import { RepositoryFactory } from "../../../domain/factory/repository-factory";
+import { StockEntriesRepository } from "../../../domain/repository/stock-entries-repository";
 
 export class PlaceOrder {
   itemsRepository: ItemsRepository;
   couponsRepository: CouponsRepository;
   ordersRepository: OrdersRepository;
+  stockEntriesRepository: StockEntriesRepository;
 
   constructor(readonly repositoryFactory: RepositoryFactory) {
     this.itemsRepository = repositoryFactory.createItemsRepository();
     this.couponsRepository = repositoryFactory.createCouponsRepository();
     this.ordersRepository = repositoryFactory.createOrderRepository();
+    this.stockEntriesRepository =
+      repositoryFactory.createStockEntriesRepository();
   }
 
   async execute(input: PlaceOrderInput): Promise<PlaceOrderOutput> {
@@ -41,6 +45,14 @@ export class PlaceOrder {
       order.addCoupon(coupon);
     }
     await this.ordersRepository.save(order);
+
+    // await input.orderItems.reduce(async (promise, orderItem) => {
+    //   await promise;
+    //   this.stockEntriesRepository.save(
+    //     new StockEntry(orderItem.idItem, "out", orderItem.quantity, order.date)
+    //   );
+    // }, Promise.resolve());
+
     const total = order.getTotal();
     const output = new PlaceOrderOutput(order.getCode(), total);
     return output;
