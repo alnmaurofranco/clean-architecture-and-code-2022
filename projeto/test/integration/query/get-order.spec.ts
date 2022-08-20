@@ -13,6 +13,7 @@ import { PrismaRepositoryFactory } from "../../../src/infra/factory/prisma-repos
 import { InMemoryRepositoryFactory } from "../../../src/infra/factory/in-memory-repository-factory";
 import { GetOrder } from "../../../src/application/query/get-order";
 import { OrderDAODatabase } from "../../../src/infra/dao/order-dao-database";
+import { Broker } from "../../../src/infra/broker/broker";
 
 let placeOrder: PlaceOrder;
 let getOrder: GetOrder;
@@ -21,7 +22,8 @@ beforeEach(() => {
   const connection = new PrismaConnectionAdapter();
   const repositoryFactory = new PrismaRepositoryFactory();
   const orderDAO = new OrderDAODatabase(connection);
-  placeOrder = new PlaceOrder(repositoryFactory);
+  const broker = new Broker();
+  placeOrder = new PlaceOrder(repositoryFactory, broker);
   getOrder = new GetOrder(orderDAO);
 });
 

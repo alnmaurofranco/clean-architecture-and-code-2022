@@ -12,6 +12,7 @@ import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connect
 import { PrismaRepositoryFactory } from "../../src/infra/factory/prisma-repository-factory";
 import { InMemoryRepositoryFactory } from "../../src/infra/factory/in-memory-repository-factory";
 import { GetOrderUseCase } from "../../src/application/use-cases/get-order/get-order-use-case";
+import { Broker } from "../../src/infra/broker/broker";
 
 let placeOrder: PlaceOrder;
 let getOrder: GetOrderUseCase;
@@ -19,7 +20,8 @@ let getOrder: GetOrderUseCase;
 beforeEach(() => {
   const repositoryFactory = new PrismaRepositoryFactory();
   // const repositoryFactory = new InMemoryRepositoryFactory();
-  placeOrder = new PlaceOrder(repositoryFactory);
+  const broker = new Broker();
+  placeOrder = new PlaceOrder(repositoryFactory, broker);
   getOrder = new GetOrderUseCase(repositoryFactory);
 });
 

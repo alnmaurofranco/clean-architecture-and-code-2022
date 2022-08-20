@@ -11,13 +11,23 @@ import { OrdersRepositoryPrisma } from "../../src/infra/repository/database/orde
 import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connection-adapter";
 import { PrismaRepositoryFactory } from "../../src/infra/factory/prisma-repository-factory";
 import { InMemoryRepositoryFactory } from "../../src/infra/factory/in-memory-repository-factory";
+import { GetStockUseCase } from "../../src/application/use-cases/get-stock/get-stock-use-case";
+import { Broker } from "../../src/infra/broker/broker";
+import { OrderPlacedStockHandler } from "../../src/application/handler/order-placed-stock-handler";
 
 let placeOrder: PlaceOrder;
+let getStock: GetStockUseCase;
 
 beforeEach(() => {
-  const repositoryFactory = new PrismaRepositoryFactory();
-  //const repositoryFactory = new InMemoryRepositoryFactory();
-  placeOrder = new PlaceOrder(repositoryFactory);
+  // const repositoryFactory = new PrismaRepositoryFactory();
+  const repositoryFactory = new InMemoryRepositoryFactory();
+  const broker = new Broker();
+  const orderPlacedStockHandler = new OrderPlacedStockHandler(
+    repositoryFactory
+  );
+  broker.register(orderPlacedStockHandler);
+  getStock = new GetStockUseCase(repositoryFactory);
+  placeOrder = new PlaceOrder(repositoryFactory, broker);
 });
 
 test("Deve fazer um pedido", async () => {
@@ -81,8 +91,13 @@ test("Deve fazer um pedido e retirar do estoque", async () => {
     date: new Date("2022-06-05"),
   };
   // Response/Output (Dados de saída)
-  const output = await placeOrder.execute(input);
-  expect(output.total).toBe(75.65);
+  const placeOrderOutput = await placeOrder.execute(input);
+  const totalA = await getStock.execute(1);
+  const totalB = await getStock.execute(2);
+  const totalC = await getStock.execute(3);
+  expect(totalA).toBe(0);
+  expect(totalB).toBe(0);
+  expect(totalC).toBe(0);
 });
 
 afterEach(async () => {

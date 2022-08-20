@@ -1,5 +1,6 @@
 import { DefaultFreightCalculator } from "../../domain/entity/default-freight-calculator";
 import { RepositoryFactory } from "../../domain/factory/repository-factory";
+import { Broker } from "../broker/broker";
 import { GetOrderController } from "../controller/get-order-controller";
 import { GetOrdersController } from "../controller/get-orders-controller";
 import { PlaceOrderController } from "../controller/place-order-controller";
@@ -12,10 +13,14 @@ export class RouteConfig {
   constructor(
     http: Http,
     repositoryFactory: RepositoryFactory,
-    connection: Connection
+    connection: Connection,
+    broker: Broker
   ) {
     http.on("/orders", "post", async (params: any, body: any) => {
-      const placeOrderController = new PlaceOrderController(repositoryFactory);
+      const placeOrderController = new PlaceOrderController(
+        repositoryFactory,
+        broker
+      );
       return await placeOrderController.handle(params, body);
     });
 

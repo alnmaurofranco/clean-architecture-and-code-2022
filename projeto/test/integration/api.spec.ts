@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GetOrdersUseCase } from "../../src/application/use-cases/get-orders/get-orders-use-case";
 import { PlaceOrder } from "../../src/application/use-cases/place-order/place-order";
+import { Broker } from "../../src/infra/broker/broker";
 import { PrismaConnectionAdapter } from "../../src/infra/database/prisma-connection-adapter";
 import { PrismaRepositoryFactory } from "../../src/infra/factory/prisma-repository-factory";
 
@@ -8,8 +9,9 @@ let placeOrder: PlaceOrder;
 let repositoryFactory: PrismaRepositoryFactory;
 
 beforeEach(() => {
+  const broker = new Broker();
   repositoryFactory = new PrismaRepositoryFactory();
-  placeOrder = new PlaceOrder(repositoryFactory);
+  placeOrder = new PlaceOrder(repositoryFactory, broker);
 });
 
 test("Deve testar a API /orders (POST) ", async () => {
